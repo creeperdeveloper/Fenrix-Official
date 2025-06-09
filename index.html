@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fenrix - 新たな冒険への扉</title>
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #06b6d4;
+            --bg-color: #ffffff;
+            --surface-color: #f8fafc;
+            --text-color: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --text-color: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .motto {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Main Content */
+        main {
+            padding: 80px 0;
+        }
+
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: var(--surface-color);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        /* Premium Section */
+        .premium-section {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            padding: 60px 0;
+            border-radius: 20px;
+            margin: 60px 0;
+        }
+
+        .premium-content {
+            text-align: center;
+        }
+
+        .premium-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .premium-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .premium-feature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Team Section */
+        .team-section {
+            text-align: center;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .team-member {
+            background: var(--surface-color);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .team-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--surface-color);
+            padding: 40px 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .motto {
+                font-size: 1.2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Status Indicators */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .status-online {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+
+        .status-offline {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                Fenrix
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features">機能</a></li>
+                <li><a href="#premium">Fenrix+</a></li>
+                <li><a href="#security">セキュリティ</a></li>
+                <li><a href="#team">チーム</a></li>
+                <li><button class="theme-toggle" onclick="toggleTheme()">🌙</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Fenrix</h1>
+            <p class="motto">「Fenrixと共に、新たな冒険を」</p>
+            <p class="hero-description">
+                次世代のセキュアなシステム管理プラットフォーム。<br>
+                高度なセキュリティ機能と直感的なインターフェースで、あなたのデジタル体験を革新します。
+            </p>
+            <div class="cta-buttons">
+                <a href="#download" class="btn btn-primary">ダウンロード</a>
+                <a href="#features" class="btn btn-secondary">詳細を見る</a>
+            </div>
+            <div style="margin-top: 2rem;">
+                <span class="status status-online">
+                    <span class="status-dot"></span>
+                    サーバー稼働中
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <main class="container">
+        <section id="features" class="section">
+            <h2 class="section-title">📦 コアシステム</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">👤</span>
+                    <h3 class="feature-title">Fenrix Account</h3>
+                    <p class="feature-description">統合アカウント管理システム</p>
+                    <ul class="feature-list">
+                        <li>アカウント作成・切り替え</li>
+                        <li>Fenrix+ サブスクリプション管理</li>
+                        <li>アカウント削除・フィードバック送信</li>
+                        <li>テストアカウント対応</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🖥️</span>
+                    <h3 class="feature-title">Fenrix Server</h3>
+                    <p class="feature-description">高性能メインサーバー</p>
+                    <ul class="feature-list">
+                        <li>API 提供（/auth, /sync, /report）</li>
+                        <li>バックアップ管理（.bkup ファイル）</li>
+                        <li>オンライン状況の監視</li>
+                        <li>自動再起動、スケジュール制御</li>
+                        <li>データ暗号化・自動削除</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">💻</span>
+                    <h3 class="feature-title">Fenrix App</h3>
+                    <p class="feature-description">直感的なクライアントアプリ</p>
+                    <ul class="feature-list">
+                        <li>Minecraftランチャー風UI</li>
+                        <li>アカウント切り替え・ログ表示</li>
+                        <li>ステータス・バージョン表示</li>
+                        <li>ロードアニメーション</li>
+                        <li>接続状態のリアルタイム表示</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🤖</span>
+                    <h3 class="feature-title">Discord Bot</h3>
+                    <p class="feature-description">多機能Discordボット</p>
+                    <ul class="feature-list">
+                        <li>/link、/vote、/event、/rps コマンド</li>
+                        <li>音楽機能（YouTube/Spotify対応）</li>
+                        <li>サーバーステータス通知</li>
+                        <li>DM通知・感謝メッセージ</li>
+                        <li>公式サーバー限定設定</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="premium-section">
+            <div class="container">
+                <div class="premium-content">
+                    <h2 class="premium-title">✨ Fenrix+ プレミアム</h2>
+                    <p>より高度な機能とサービスを体験しよう</p>
+                    <div class="premium-features">
+                        <div class="premium-feature">
+                            <h4>⚡ 処理・接続優先権</h4>
+                            <p>優先的な処理とより高速な接続</p>
+                        </div>
+                        <div class="premium-feature">
+                            <h4>🌙 深夜アクセス</h4>
+                            <p>24時間いつでもアクセス可能</p>
+                        </div>
+                        <div class="premium-feature">
+                            <h4>🔧 限定機能</h4>
+                            <p>FSS拡張・GUI操作など</p>
+                        </div>
+                        <div class="premium-feature">
+                            <h4>🪙 FCボーナス</h4>
+                            <p>Fenrix Coinの特別配布</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section id="security" class="section">
+            <h2 class="section-title">🛡️ セキュリティ・保護機能</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🔒</span>
+                    <h3 class="feature-title">FSS (Fenrix Secure Security)</h3>
+                    <p class="feature-description">統合セキュリティシステム</p>
+                    <ul class="feature-list">
+                        <li>改造・クラッキング検知＆BAN</li>
+                        <li>アップデート時ファイル改変確認</li>
+                        <li>自動復旧機能</li>
+                        <li>特権アクセス制限</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">📁</span>
+                    <h3 class="feature-title">FSF (Fenrix Secure File)</h3>
+                    <p class="feature-description">セキュアファイルシステム</p>
+                    <ul class="feature-list">
+                        <li>クライアント側復号可能</li>
+                        <li>改造・コピー不可設計</li>
+                        <li>.fsf形式ファイル</li>
+                        <li>自動削除機能付き</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🔄</span>
+                    <h3 class="feature-title">Fenrix Auto Recovery</h3>
+                    <p class="feature-description">自動復旧システム</p>
+                    <ul class="feature-list">
+                        <li>破損モジュール検出</li>
+                        <li>自動再インストール</li>
+                        <li>システム依存関係管理</li>
+                        <li>完全復元機能</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">🌐</span>
+                    <h3 class="feature-title">FSN (Fenrix SecureNet)</h3>
+                    <p class="feature-description">安全なデータ通信</p>
+                    <ul class="feature-list">
+                        <li>Fenrix間安全通信</li>
+                        <li>自動差分更新</li>
+                        <li>改造検知でBAN</li>
+                        <li>更新拒否警告</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">📄 ライセンス・MOD</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🔧</span>
+                    <h3 class="feature-title">.fm (Fenrix Mod)</h3>
+                    <p class="feature-description">Fenrix専用MODシステム</p>
+                    <ul class="feature-list">
+                        <li>.FR署名付きのみ起動可能</li>
+                        <li>システムアクセス制限</li>
+                        <li>特別ライセンス管理</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <span class="feature-icon">📜</span>
+                    <h3 class="feature-title">.FR (Fenrix License)</h3>
+                    <p class="feature-description">デジタル署名システム</p>
+                    <ul class="feature-list">
+                        <li>署名付きファイルのみ実行</li>
+                        <li>改ざん防止機能</li>
+                        <li>ライセンス認証システム</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="team" class="section team-section">
+            <h2 class="section-title">👥 開発チーム</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-avatar">Y</div>
+                    <h3>yosiyuki</h3>
+                    <p>メイン開発者</p>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">
+                        Fenrixプロジェクトの創設者兼リードデベロッパー
+                    </p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">C</div>
+                    <h3>creeper_dev</h3>
+                    <p>開発協力</p>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">
+                        システム開発とセキュリティ機能の実装を担当
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Fenrix</h3>
+                    <p>新たな冒険への扉を開く、次世代システム管理プラットフォーム</p>
+                </div>
+                <div class="footer-section">
+                    <h3>リンク</h3>
+                    <ul class="footer-links">
+                        <li><a href="#download">ダウンロード</a></li>
+                        <li><a href="#features">機能</a></li>
+                        <li><a href="#premium">Fenrix+</a></li>
+                        <li><a href="#security">セキュリティ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>サポート</h3>
+                    <ul class="footer-links">
+                        <li><a href="#help">ヘルプ</a></li>
+                        <li><a href="#contact">お問い合わせ</a></li>
+                        <li><a href="#feedback">フィードバック</a></li>
+                        <li><a href="#discord">Discord</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>法的情報</h3>
+                    <ul class="footer-links">
+                        <li><a href="#privacy">プライバシーポリシー</a></li>
+                        <li><a href="#terms">利用規約</a></li>
+                        <li><a href="#license">ライセンス</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 Fenrix. All rights reserved. | 「Fenrixと共に、新たな冒険を」</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.querySelector('.theme-toggle');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Load saved theme
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.querySelector('.theme-toggle');
+            
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = '☀️';
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add loading animation to buttons
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (this.href && this.href.includes('#download')) {
+                    e.preventDefault();
+                    const originalText = this.textContent;
+                    this.innerHTML = '<span class="loading"></span> ダウンロード中...';
+                    
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        alert('Fenrixのダウンロードが開始されました！');
+                    }, 2000);
+                }
+            });
+        });
+
+        // Simulate server status updates
+        function updateServerStatus() {
+            const statusElement = document.querySelector('.status');
+            const isOnline = Math.random() > 0.1; // 90% uptime simulation
+            
+            if (isOnline) {
+                statusElement.className = 'status status-online';
+                statusElement.innerHTML = '<span class="status-dot"></span>サーバー稼働中';
+            } else {
+                statusElement.className = 'status status-offline';
+                statusElement.innerHTML = '<span class="status-dot"></span>サーバーメンテナンス中';
+            }
+        }
+
+        // Update server status every 30 seconds
+        setInterval(updateServerStatus, 30000);
+
+        // Add scroll effect to header
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'linear-gradient(135deg, rgba(99, 102, 241, 0.95), rgba(139, 92, 246, 0.95))';
+                header.style.backdropFilter = 'blur(10px)';
+            } else {
+                header.style.background = 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))';
+                header.style.backdropFilter = 'none';
+            }
+        });
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all feature cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
